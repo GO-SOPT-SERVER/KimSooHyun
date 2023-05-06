@@ -1,14 +1,15 @@
 package sopt.org.ThirdSeminar.domain;
 
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.validation.constraints.Pattern;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class User {
+public class User extends AuditingTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,10 +24,13 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    @Builder
-    public User(String nickname, String email, String password) {
+    private User(String nickname, String email, String password) {
         this.nickname = nickname;
         this.email = email;
         this.password = password;
+    }
+
+    public static User newInstance(String nickname, String email, String password) {
+        return new User(nickname, email, password);
     }
 }
